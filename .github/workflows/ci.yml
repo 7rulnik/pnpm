@@ -40,9 +40,20 @@ jobs:
       run: pnpm install
     - name: Audit
       run: pnpm audit
-    - name: run tests (main)
-      if: github.ref == 'refs/heads/main'
-      run: pnpm run test-main
-    - name: run tests (branch)
-      if: github.ref != 'refs/heads/main'
-      run: pnpm run test-branch
+    # - name: run tests (main)
+    #   if: github.ref == 'refs/heads/main'
+    #   run: pnpm run test-main
+    - name: run pretest tests (branch)
+      run: pnpm pretest
+    - name: run lint tests (branch)
+      run: pnpm lint -- --quiet
+    - name: run git
+      run: git remote set-branches --add origin main && git fetch
+    - name: run test
+      run: pnpm exec run-p -r verdaccio test-pkgs-branch
+
+
+
+
+
+
